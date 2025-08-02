@@ -299,9 +299,9 @@ it should automatically highlight what the text is (usually in white).
 
 	<div style="color:#999">
 		<!-- TRANSLATE note: comment out the line below... -->
-		playing time: 30 min • by nicky case, april 2018
+		playing time: 10 min • by aniruddh pramod, august 2025 • originally by nicky case
 		<!-- ...and UN-comment + TRANSLATE this line! -->
-		<!-- by nicky case • translated by [your name] • <a href='.'>original in English</a> -->
+		<!-- by nicky case • modified by aniruddh pramod, august 2025• <a href='.'>original in English</a> -->
 	</div>
 
 </words>
@@ -332,26 +332,35 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 <words id="intro">
 
 	<br><br>
-
-	Sir Isaac Newton was pretty sure he was a
+	As an internet baby, I am very familiar and fond
+	<!-- Sir Isaac Newton was pretty sure he was a -->
 	<br>
-	smart cookie. I mean, after inventing calculus and
+	of Nicky Case's little shtuffs. The adorable artstyle
+	<!-- smart cookie. I mean, after inventing calculus and -->
 	<br>
-	a theory of gravity, he should be clever enough to do
+	and the fun stories that she tries to tell through them
+	<!-- a theory of gravity, he should be clever enough to do -->
 	<br>
-	some financial investing, right? Anyway, long story short, he
+	have been inspiring to say the least. So when I took part at 
+	<!-- some financial investing, right? Anyway, long story short, he -->
 	<br>
-	lost $4,600,000 (in today's dollars) in the nationwide
+	a summer school for graph theory, I couldn't resist the 
+	<!-- lost $4,600,000 (in today's dollars) in the nationwide -->
 	<br>
-	speculation frenzy known as the South Sea Bubble of 1720.
+	opportunity to go back to this one and display some of the cool shtuff
+	<!-- speculation frenzy known as the South Sea Bubble of 1720. -->
+	<br>
+	that I had learned as well.
 
 	<br><br>
 
-	As Mr. Newton later said: <i>“I can calculate the motion of
+	If you aren't familiar, pleease go checkout the original 
+	<!-- As Mr. Newton later said: <i>“I can calculate the motion of -->
 	<br>
-	heavenly bodies, but not the madness of people.”</i>
+	at <a target="_blank" href="http://ncase.me/crowds"><i>ncase.me/crowds</i></a>
+	and her other works at <a target="_blank" href="http://ncase.me"><i>ncase.me</i></a>
 
-	<next>yeah sucks for him <div class="rarr"></div> </next>
+	<next>so what did I learn? <div class="rarr"></div> </next>
 
 </words>
 
@@ -392,7 +401,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 <!-- Networks -->
 
 <words id="networks_tutorial_start">
-	<b>Let's draw a network!</b>
+	<b>Tutorial time! Let's draw a network!</b>
 	Each connection represents a friendship between two people:
 </words>
 
@@ -504,10 +513,9 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 
 <words id="simple_simple">
 	<i>Let's put aside the "threshold" thing for now.</i>
-	Below: we have a person <icon name="red"></icon> with some information.
-	Some <i>mis</i>information. "Fake news", as the cool kids say.
-	And every day, that person spreads the rumor, like a virus, to their friends.
-	And they spread it to <i>their</i> friends. And so on.
+	Below: we have a person <icon name="red"></icon> with a rumour.
+	And every day, someone with this rumor will spread it, like a virus, to their friends<ref id="well_not_really"></ref>.
+	People who do not have the tea yet, have no gossip to share, so we can ignore them.
 	<br>
 	<b>
 	Start the simulation! <div class="darr"></div>
@@ -516,7 +524,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 </words>
 
 <words id="simple_simple_2">
-	Note: despite the negative name, "contagions" can be good or bad (or neutral or ambiguous). 
+	Note: despite the negative name, "rumours" can be good or bad (or neutral or ambiguous). 
 	There's strong statistical evidence<ref id="contagion"></ref> that
 	smoking, health, happiness, voting patterns, and cooperation levels
 	are all "contagious" --
@@ -532,7 +540,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 	Anyway, <b>PUZZLE TIME!</b>
 	<br>
 	Draw a network &amp; run the simulation,
-	so that <i>everyone</i> gets infected with the "contagion".
+	so that <i>everyone</i> gets infected with the "rumour".
 	<br>
 	(new rule: you can't cut the <i>thick</i> connections)
 </words>
@@ -542,13 +550,12 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 </words>
 
 <words id="simple_post_cascade">
+	This model is a little unrealistic yes, after all 
+	most ideas <i>don't</i> spread like viruses.
+	For many beliefs and behaviors, you need to be "exposed" to the contagion more than just once
 	This madness-spreading is called an <b>"information cascade"</b>.
-	Mr. Newton fell for such a cascade in 1720.
-	The world's financial institutions fell for such a cascade in 2008.<ref id="subprime"></ref>
 	<br><br>
 	However: <i>this simulation is wrong.</i>
-	Most ideas <i>don't</i> spread like viruses.
-	For many beliefs and behaviors, you need to be "exposed" to the contagion more than just once
 	in order to be "infected".
 	So, network scientists have come up with a new, better way to 
 	describe how ideas/behaviors spread, and they call it...
@@ -1331,6 +1338,31 @@ Final thing! These references also need you to TRANSLATE:
 	Connected</a> (2009). 
 
 	</div>
+</reference>
+<reference id="well_not_really">
+	<h3>
+		"like a virus, to their friends"
+	</h3>
+
+	<div>
+
+	I am oversimplifying a model here to make it easier to imagine 
+	(and visualize).
+	In actuality, we use a Poisson model. 
+	Every node has, associated with it, a Poisson clock
+	 that will tick after Exp(1) time.	When this clock ticks,
+	  it picks a neighbour, and spreads the rumour to them.
+		If this neighbour already has the rumour, nothing happens,
+		 but if it doesn't,
+		then they acquire a Poisson clock, and will spread the rumour.
+	
+	In practicality though, we care little about the times in between.
+	We can pretend that by a 'day' we just mean the time that passes 
+	before another Poisson clock rings.
+
+	</div>
+
+
 </reference>
 <reference id="suicides">
 
