@@ -47,7 +47,7 @@ function Simulations(){
 				self.sims.forEach(function(sim){
 					sim.nextStep();
 				});
-				self.CLOCK = 30; //25;
+				self.CLOCK = 20; //25;
 
 			}
 			self.CLOCK--;
@@ -123,6 +123,7 @@ function Sim(config){
 	self.networkConfig = cloneObject(config.network);
 	self.container = config.container;
 	self.options = config.options || {};
+	self.isProcessingStep = false;
 
 	self.id = config.id;
 
@@ -190,7 +191,8 @@ function Sim(config){
 			var x = p[0],
 				y = p[1],
 				infected = p[2];
-			self.addPeep(x, y, infected);
+				infectedWith = p[3]
+			self.addPeep(x, y, infected, infectedWith);
 		});
 
 		// Connections
@@ -294,6 +296,23 @@ function Sim(config){
 		self.peeps.forEach(function(peep){
 			peep.draw(ctx);
 		});
+		ctx.restore();
+    
+		// NOW draw step counter AFTER restoring the main context
+		ctx.save();
+		ctx.scale(2,2); // Only retina scaling
+		// Set up text styling
+		ctx.font = '20px PatrickHand';
+		ctx.fillStyle = "#333";
+		ctx.textAlign = "right";
+		ctx.textBaseline = "top";
+		
+		// Calculate position (top right corner with some padding)
+		var canvasWidth = ctx.canvas.width / 2; // Divide by 2 for retina
+		var stepText = "Step: " + self.STEP;
+		
+		// Draw step counter
+		ctx.fillText(stepText, canvasWidth - 20, 20);
 
 		ctx.restore();
 
@@ -449,7 +468,13 @@ function Sim(config){
 		self.contagion = contagionLevel;
 	};
 
+
+
 	self.nextStep = function(){
+		// Prevent overlapping steps
+		if(self.isProcessingStep) return;
+		self.isProcessingStep = true;
+
 
 		// SOUND! If anyone can be infected, play Contagion sound.
 		// Otherwise play Bonk sound ONCE
@@ -460,6 +485,21 @@ function Sim(config){
 		self.peeps.forEach(function(peep){
 			if(!peep.infected) isEveryoneInfected=false;
 		});
+		// CHECK IF SIMULATION SHOULD STOP
+		var hasInfectedPeeps = self.peeps.some(function(peep){
+			return peep.infected;
+		});
+		
+		// Stop stepping if:
+		// 1. Everyone is infected, OR
+		// 2. No one can be infected AND there are infected peeps (infection has stopped spreading)
+		if(isEveryoneInfected || (canBeInfected === 0 && hasInfectedPeeps)){
+			// Don't increment step counter - simulation is effectively over
+			self.isProcessingStep = false; // Reset flag
+			return; // Exit early, don't continue with the step
+		}
+
+
 		if(canBeInfected>0){
 			_PLAY_CONTAGION_SOUND();
 		}else if(self._canPlayBonkSound && !isEveryoneInfected){
@@ -471,25 +511,69 @@ function Sim(config){
 			
 		}
 
-		// "Infect" the peeps who need to get infected
+		
+		// CONNECTIONS: IF one is INFECTED and the other is PAST THRESHOLD, then ANIMATE
+		if (self.contagion <= 1){
+			// For contagion 0-1: ALL connections animate
+			self.connections.forEach(function(c){
+				c.animate();
+			});
+
+			// PEEPS: If not already infected & past threshold, infect
+			self.peeps.forEach(function(peep){
+				if(!peep.infected && peep.isPastThreshold){
+					// timeout for animation
+					setTimeout(function(){
+						peep.infect();
+					},150);
+				}
+			});
+		}
+		else{
+			// For contagion > 1: Pick ONE random connection to animate
+			var animatableConnections = self.connections.filter(function(c){
+				// Only connections where infection can spread
+				return (c.from.infected && (!c.to.infected)) ||
+				(c.to.infected && (!c.from.infected));
+			});
+			if(animatableConnections.length > 0){
+				var randomIndex = Math.floor(Math.random() * animatableConnections.length);
+				var chosenConnection = animatableConnections[randomIndex];
+				chosenConnection.animate();
+				// Determine which peep should get infected
+				var peepToInfect;
+				if(chosenConnection.from.infected && !chosenConnection.to.infected){
+					peepToInfect = chosenConnection.to;
+				} else if(chosenConnection.to.infected && !chosenConnection.from.infected){
+					peepToInfect = chosenConnection.from;
+				}
+				
+				// Infect ONLY this specific peep after animation delay
+				if(peepToInfect){
+					setTimeout(function(){
+						peepToInfect.infect();
+					}, 150);
+				}
+			}
+		}
+		
+
+		
+		// "Infect" the peeps who need to get infected - ONLY if continuing
+		// var peepsToInfect = self.peeps.filter(function(peep){
+		// 	return !peep.infected && peep.isPastThreshold;
+		// });
+		
+		// peepsToInfect.forEach(function(peep){
+		// 	peep.infect();
+		// });
+
+
+    	// Increment step counter after a delay
 		setTimeout(function(){
 			self.STEP++;
-		},400);
-
-		// CONNECTIONS: IF one is INFECTED and the other is PAST THRESHOLD, then ANIMATE
-		self.connections.forEach(function(c){
-			c.animate();
-		});
-
-		// PEEPS: If not already infected & past threshold, infect
-		self.peeps.forEach(function(peep){
-			if(!peep.infected && peep.isPastThreshold){
-				// timeout for animation
-				setTimeout(function(){
-					peep.infect();
-				},333);
-			}
-		});
+			self.isProcessingStep = false;
+		},200);
 
 		// PEEPS: If NOT infected, NOT past threshold, and a friend IS INFECTED, then SHAKE
 		self.peeps.forEach(function(peep){
@@ -610,8 +694,8 @@ function Sim(config){
 	////////////////
 
 	// Add Peeps/Connections
-	self.addPeep = function(x, y, infected){
-		var peep = new Peep({ x:x, y:y, infected:infected, sim:self });
+	self.addPeep = function(x, y, infected, infectedWith){
+		var peep = new Peep({ x:x, y:y, infected:infected, infectedWith: infectedWith, sim:self });
 		self.peeps.push(peep);
 		return peep;
 	};

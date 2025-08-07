@@ -56,11 +56,19 @@ function Connection(config){
 		ctx.restore();
 
 		// DRAW CONTAGION DOT
-		if(self.contagionDot){
+		if(self.sim.contagion<=1 && self.contagionDot){
 			var infectedFrame = self.sim.options.infectedFrame || 1;
 			self.dotSprite.x = self.contagionDot.x;
 			self.dotSprite.y = self.contagionDot.y;
 			self.dotSprite.gotoFrame(infectedFrame);
+			self.dotSprite.draw(ctx);
+		}
+		else if(self.sim.contagion==2 && self.contagionDot){
+			var infectedFrame = self.sim.options.infectedFrame || 1;
+			var dotFrame = self.sim.options.dotFrame || 1;
+			self.dotSprite.x = self.contagionDot.x;
+			self.dotSprite.y = self.contagionDot.y;
+			self.dotSprite.gotoFrame(dotFrame);
 			self.dotSprite.draw(ctx);
 		}
 
@@ -109,7 +117,7 @@ function Connection(config){
 		}
 
 		// boop! 
-		if(cFrom && cTo){
+		if(self.sim.contagion <= 1 && cFrom && cTo){
 
 			// ANIMATE IT
 			cFrom = { x:cFrom.x, y:cFrom.y };
@@ -118,6 +126,22 @@ function Connection(config){
 				self.contagionDot = point;
 			}, easeLinear);
 
+			// Then, goodbye later
+			setTimeout(function(){
+				self.contagionDot = null;
+			},333);
+
+		}
+		else if (self.sim.contagion == 2 && cFrom && cTo){
+			// TODO: Need a way to tell this connection that it was picked 
+
+			cFrom = { x:cFrom.x, y:cFrom.y };
+			cTo = { x:cTo.x, y:cTo.y };
+			tweenPosition(cFrom, cTo, function(point){
+				self.contagionDot = point;
+			}, easeLinear);
+
+			
 			// Then, goodbye later
 			setTimeout(function(){
 				self.contagionDot = null;

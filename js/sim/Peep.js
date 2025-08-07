@@ -8,6 +8,7 @@ function Peep(config){
 	self.velocity = {x:0, y:0};
 	self.infected = !!config.infected;
 	self.sim = config.sim;
+	self.infectedWith = config.infectedWith || 1
 
 	// Update:
 	self.numFriends = 0;
@@ -54,7 +55,7 @@ function Peep(config){
 		if(self.sim.contagion==0){
 			// simple
 			if(self.numInfectedFriends>0) self.isPastThreshold = true;
-		}else{
+		}else if(self.sim.contagion <= 1){
 			// complex
 			if(self.numFriends>0){
 				var ratio = self.numInfectedFriends/self.numFriends;
@@ -62,6 +63,8 @@ function Peep(config){
 					self.isPastThreshold = true;
 				}
 			}
+		}else{
+			if(self.numInfectedFriends>0) self.isPastThreshold = true;
 		}
 
 		// SPLASH: FORCE-DIRECTED
@@ -194,7 +197,7 @@ function Peep(config){
 		// Circle
 		var infectedFrame = self.sim.options.infectedFrame || 1;
 		var infectedColor = PEEP_COLORS[infectedFrame];
-		var myFrame = self.infected ? infectedFrame : 0;
+		var myFrame = self.infected ? self.infectedWith : 0;
 		var myColor = PEEP_COLORS[myFrame];
 		// CONCLUSION SPLASH
 		if(self.sim.options.CONCLUSION){
@@ -212,8 +215,18 @@ function Peep(config){
 			var _glowScale = 1 + Math.sin(_glowAnim)*0.04;
 			ctx.globalAlpha = 0.35;
 			self.sprite.scale = _initSpriteScale*1.25*_glowScale;
-			
-			self.sprite.gotoFrame(infectedFrame);
+
+			// MODIFIED: Use yellow for uninfected, infectedWith color for infected
+			var glowFrame;
+			if(self.infected){
+				// For infected peeps, use their stored color
+				glowFrame = self.infectedWith || 1; // fallback to red if no color stored
+			} else {
+				// For uninfected peeps, always use yellow (frame 2)
+				glowFrame = 2; // yellow
+			}
+					
+			self.sprite.gotoFrame(glowFrame);
 			self.sprite.draw(ctx);
 
 			// undo
@@ -261,7 +274,7 @@ function Peep(config){
 		//////////////////////////////////////////////////////////
 
 		// DON'T show bar if simple contagion
-		if(self.sim.contagion>0){
+		if(self.sim.contagion>0 && self.sim.contagion<=1){
 
 			ctx.save();
 
@@ -315,7 +328,7 @@ function Peep(config){
 			
 			// the color fill
 			if(self.numFriends>0){
-				ctx.fillStyle = infectedColor;
+				ctx.fillStyle = myColor;
 				ctx.beginPath();
 				ctx.rect(-barWidth/2, -barHeight/2, barWidth*(self.numInfectedFriends/self.numFriends), barHeight);
 				ctx.fill();

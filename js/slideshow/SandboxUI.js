@@ -12,9 +12,10 @@ function SandboxUI(container){
 	var contagionInput = document.createElement("input");
 	contagionInput.type = "range";
 	contagionInput.min = 0;
-	contagionInput.max = 1;
+	contagionInput.max = 2;
 	contagionInput.step = 0.05;
 	contagionInput.value = 0.25;
+
 	contagionInput.oninput = function(){
 		_updateContagion();
 	};
