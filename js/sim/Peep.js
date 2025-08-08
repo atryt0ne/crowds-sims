@@ -8,7 +8,7 @@ function Peep(config){
 	self.velocity = {x:0, y:0};
 	self.infected = !!config.infected;
 	self.sim = config.sim;
-	self.infectedWith = config.infectedWith || 1
+	self.infectedWith = config.infectedWith || 1;
 
 	// Update:
 	self.numFriends = 0;
@@ -375,8 +375,13 @@ function Peep(config){
 	};
 
 	// Infect
-	self.infect = function(){
+	self.infect = function(infectedWith){
 		self.infected = true;
+		if(infectedWith !== undefined){
+        	self.infectedWith = infectedWith;
+    	} else if(!self.infectedwith){
+        	self.infectedWith = 1; // Default to red if no color is set
+    	}
 	};
 
 	// Shake

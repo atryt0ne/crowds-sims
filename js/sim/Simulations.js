@@ -524,7 +524,7 @@ function Sim(config){
 				if(!peep.infected && peep.isPastThreshold){
 					// timeout for animation
 					setTimeout(function(){
-						peep.infect();
+						peep.infect(1);
 					},150);
 				}
 			});
@@ -542,16 +542,19 @@ function Sim(config){
 				chosenConnection.animate();
 				// Determine which peep should get infected
 				var peepToInfect;
+				var infectedColor = 1;
 				if(chosenConnection.from.infected && !chosenConnection.to.infected){
 					peepToInfect = chosenConnection.to;
+					infectedColor = chosenConnection.from.infectedWith || 1;
 				} else if(chosenConnection.to.infected && !chosenConnection.from.infected){
 					peepToInfect = chosenConnection.from;
+					infectedColor = chosenConnection.to.infectedWith || 1;
 				}
 				
 				// Infect ONLY this specific peep after animation delay
 				if(peepToInfect){
 					setTimeout(function(){
-						peepToInfect.infect();
+						peepToInfect.infect(infectedColor);
 					}, 150);
 				}
 			}
@@ -674,7 +677,7 @@ function Sim(config){
 			savedNetwork.peeps.push([Math.round(peep.x),
 				 Math.round(peep.y),
 				  peep.infected?1:0,
-				peep.infectedwith || null]);
+				peep.infectedWith || null]);
 		});
 		self.connections.forEach(function(c){
 			var fromIndex = self.peeps.indexOf(c.from);
