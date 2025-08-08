@@ -645,8 +645,9 @@ function Sim(config){
 
 		// SOUND
 		SOUNDS.pop.play();
+		var infectedWith = infected ? (self.options.curInfectedFrame || 1) : null;
 
-		self.addPeep(self.mouse.x, self.mouse.y, infected);
+		self.addPeep(self.mouse.x, self.mouse.y, infected, infectedWith);
 
 	};
 	_keyHandlers.push(subscribe("key/down/delete",function(){
@@ -670,7 +671,10 @@ function Sim(config){
 			connections: []
 		};
 		self.peeps.forEach(function(peep){
-			savedNetwork.peeps.push([Math.round(peep.x), Math.round(peep.y), peep.infected?1:0]);
+			savedNetwork.peeps.push([Math.round(peep.x),
+				 Math.round(peep.y),
+				  peep.infected?1:0,
+				peep.infectedwith || null]);
 		});
 		self.connections.forEach(function(c){
 			var fromIndex = self.peeps.indexOf(c.from);
@@ -695,6 +699,9 @@ function Sim(config){
 
 	// Add Peeps/Connections
 	self.addPeep = function(x, y, infected, infectedWith){
+		if(infected && infectedWith === undefined && self.options.curInfectedFrame){
+        	infectedWith = self.options.curInfectedFrame;
+    	}
 		var peep = new Peep({ x:x, y:y, infected:infected, infectedWith: infectedWith, sim:self });
 		self.peeps.push(peep);
 		return peep;

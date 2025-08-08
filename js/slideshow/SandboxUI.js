@@ -71,6 +71,8 @@ function SandboxUI(container){
 		oninput:function(value){
 			// update sim
 			slideshow.simulations.sims[0].options.infectedFrame = value;
+        slideshow.simulations.sims[0].options.curInfectedFrame = value;
+
 		}
 	});
 	container.appendChild(colorChooserLabel);
