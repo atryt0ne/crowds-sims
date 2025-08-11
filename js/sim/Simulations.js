@@ -310,9 +310,18 @@ function Sim(config){
 		// Calculate position (top right corner with some padding)
 		var canvasWidth = ctx.canvas.width / 2; // Divide by 2 for retina
 		var stepText = "Step: " + self.STEP;
+		var timeText = "Time: " + self.TIME;
+		var nVertices = self.peeps.length;
+		var refText = "2 log n: " + (2 * Math.log(nVertices)).toFixed(2);
 		
 		// Draw step counter
 		ctx.fillText(stepText, canvasWidth - 20, 20);
+		// Draw time counter
+		ctx.fillText(timeText, canvasWidth - 20, 40)
+		// Draw reference value if contagion level is 2
+		if (self.contagion > 1){
+			ctx.fillText(refText, canvasWidth - 20, 60);
+		}
 
 		ctx.restore();
 
@@ -452,9 +461,11 @@ function Sim(config){
 	////////////////////////
 
 	self.STEP = 0;
+	self.TIME = 0;
 
 	self.save = function(){
 		self.STEP = 0;
+		self.TIME = 0;
 		self.networkConfig = self.getCurrentNetwork();
 	};
 
@@ -463,6 +474,7 @@ function Sim(config){
 	self.reload = function(){
 		var contagionLevel = self.contagion; // hack for sandbox: keep contagion the same
 		self.STEP = 0;
+		self.TIME = 0;
 		self._canPlayBonkSound = true;
 		self.init();
 		self.contagion = contagionLevel;
@@ -536,6 +548,13 @@ function Sim(config){
 				return (c.from.infected && (!c.to.infected)) ||
 				(c.to.infected && (!c.from.infected));
 			});
+
+			// Generate random value from exponential distribution with lambda = 1/validEdgeCount
+			var validEdgeCount = animatableConnections.length
+			var lambda = validEdgeCount > 0 ? validEdgeCount : 1;
+			var randExp = -Math.log(1 - Math.random()) / lambda;
+			self.TIME += randExp;
+			
 			if(animatableConnections.length > 0){
 				var randomIndex = Math.floor(Math.random() * animatableConnections.length);
 				var chosenConnection = animatableConnections[randomIndex];
