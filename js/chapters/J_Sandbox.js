@@ -15,6 +15,9 @@ SLIDES.push(
 				"peeps":[[506,195,1],[621,270,0],[724,194,0]],
 				"connections":[[0,1,0],[1,2,0]]
 			},
+			options:{
+				showTimes: true
+			}
 		},
 
 		// The Sandbox UI

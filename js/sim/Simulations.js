@@ -314,13 +314,15 @@ function Sim(config){
 		var nVertices = self.peeps.length;
 		var refText = "2 log n: " + (2 * Math.log(nVertices)).toFixed(2);
 		
-		// Draw step counter
-		ctx.fillText(stepText, canvasWidth - 20, 20);
-		// Draw time counter
-		ctx.fillText(timeText, canvasWidth - 20, 40)
-		// Draw reference value if contagion level is 2
-		if (self.contagion > 1){
-			ctx.fillText(refText, canvasWidth - 20, 60);
+		if (self.options.showTimes){
+			// Draw step counter
+			ctx.fillText(stepText, canvasWidth - 20, 20);
+			// Draw time counter
+			ctx.fillText(timeText, canvasWidth - 20, 40)
+			// Draw reference value if contagion level is 2
+			if (self.contagion > 1){
+				ctx.fillText(refText, canvasWidth - 20, 60);
+			}
 		}
 
 		ctx.restore();
