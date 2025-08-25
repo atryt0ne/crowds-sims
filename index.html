@@ -415,7 +415,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 <!-- Networks -->
 
 <words id="networks_tutorial_start">
-	<b>Tutorial time! Let's draw a network!</b>
+	<b>Let's quickly do a short tutorial!</b>
 	Each connection represents a friendship between two people:
 </words>
 
@@ -435,9 +435,10 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 </words>
 
 <words id="networks_threshold">
-
-	Now, social connections are for more than just making pretty pictures.
-	People <i>look to</i> their social connections to understand their world.
+	Naturally, your friendships influence you. Information spreads through
+	your friend group and that information informs you about the world you live in.
+	<!-- Now, social connections can be used for more than just a pretty viz.
+	People <i>look to</i> their social connections to understand their world. -->
 	For example, people look to their peers to
 	find out <b>what % of their friends (not counting themselves)</b> are,
 	say, binge-drinkers. <icon name="yellow"></icon>
@@ -453,23 +454,24 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 </words>
 
 <words id="networks_pre_puzzle">
+	<!-- However, your information could also be <i>wrong</i>.
 	However, networks can <i>fool</i> people.
 	Just like how the earth seems flat because we're on it,
-	people may get wrong ideas about society because they're <i>in</i> it.
+	people may get wrong ideas about society because they're <i>in</i> it. -->
 </words>
 
 <words id="optional_reading">
-	<div style="position:absolute; top:5px;">
+	<!-- <div style="position:absolute; top:5px;">
 		<i>optional</i> extra bonus notes! &uarr;
 	</div>
 	<div style="position:absolute; left:216px; top:10px;">
 		&darr; links and references
-	</div>
+	</div> -->
 </words>
 
 <words id="networks_pre_puzzle_2">
 	
-	<bon id="books"></bon>
+	<!-- <bon id="books"></bon>
 
 	<br>
 
@@ -480,7 +482,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 	Well, you're about to invent the answer yourself, by drawing a network.
 	It's time to...
 
-	<next>FOOL EVERYONE <div class="rarr"></div> </next>
+	<next>FOOL EVERYONE <div class="rarr"></div> </next> -->
 
 </words>
 
@@ -513,10 +515,15 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 	<i>Madness.</i>
 
 	<bon id="connections"></bon>
-
-	But people don't just passively <i>observe</i> others' ideas and behaviors,
+	Thus, networks are a nice way to model how the information might spread 
+	through, (and affect) a society. 
+	You could use them to study how resillient it is to fake news, 
+	or maybe how devastating a virus might be, and how quickly it might be
+	able to reach everyone!
+	Network scientists typically call the piece of information here a ... 
+	<!-- But people don't just passively <i>observe</i> others' ideas and behaviors,
 	they actively <i>copy</i> them.
-	So now, let's look at something network scientists call...
+	So now, let's look at something network scientists call... -->
 
 	<next>“Contagions!” <div class="rarr"></div> </next>
 
@@ -566,16 +573,45 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 <words id="simple_post_cascade">
 	This model is a little unrealistic yes, after all 
 	most ideas <i>don't</i> spread like viruses.
-	For many beliefs and behaviors, you need to be "exposed" to the contagion more than just once
-	This madness-spreading is called an <b>"information cascade"</b>.
+	For many beliefs and behaviors, you need to be "exposed" to the contagion more than just once.
+	<!-- This madness-spreading is called an <b>"information cascade"</b>. -->
 	<br><br>
-	However: <i>this simulation is wrong.</i>
-	in order to be "infected".
-	So, network scientists have come up with a new, better way to 
-	describe how ideas/behaviors spread, and they call it...
-	<next wiggle>“<i>Complex</i> Contagions!” <div class="rarr"></div> </next>
+	To make this model more realistic about the way the contagion spreads,
+	we can use a threshold system, like in the drinking example, which is
+	called a <i>complex contagion</i>. 
+	However. I want to focus on the time it takes for the infection to spread.
+	And the math for that is much more elegant if we use what's called the 
+	<i>push model</i>.
+	<!-- However: <i>this simulation is wrong.</i> -->
+	<!-- in order to be "infected". -->
+	<!-- So, network scientists have come up with a new, better way to  -->
+	<!-- describe how ideas/behaviors spread, and they call it... -->
+	<!-- <next wiggle>“<i>Complex</i> Contagions!” <div class="rarr"></div> </next> -->
 </words>
 
+<!-- Push Model -->
+<words id="push_model">
+
+	Let's now change the example we saw to a push model with Poisson clocks. 
+	Pay attention to the differences in the way the infection will spread this time.
+
+</words>
+
+<words id="push_post">
+	Not much changes, except for the fact that now instead of all possible edges
+	spreading the infection, one of the potential ones is picked at random and gets to
+	transmit the rumour at each time step.
+	<br><br>
+	To be precise, we are actually giving each node a Poisson clock, and when the clock ticks,
+	the node is allowed to pass an infection (if it can). But that'd look quite awkward
+	in a simulation. So instead, one tick of the simulation will automatically activate the 
+	edge with the minimum clock time. And we will add an amount sampled as per the appropriate
+	distribution to the counter in the top right.
+</words>
+
+<words id="push_post_end">
+	<next wiggle>sounds about right <div class="rarr"></div> </next>
+</words>
 <!-- Complex Contagions -->
 
 <words id="complex_complex">

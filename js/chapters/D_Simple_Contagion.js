@@ -204,4 +204,98 @@ SLIDES.push(
 		}*/
 	]
 },
+{
+	chapter: "Simple",
+	clear:true,
+	add:[
+
+		// Intro text
+		{
+			type:"box",
+			id:"push_model",
+			text:"push_model",
+			x:80, y:0, w:800, h:160,
+			align: "center"
+		},
+
+		// Lil' contagion
+		{
+			type:"sim",
+			id:"contagion",
+			x:0, y:80,
+			fullscreen: true,
+			network: {
+				"contagion":2,
+				"peeps":CONTAGION_PUZZLE.peeps,
+				"connections":CONTAGION_PUZZLE.connections
+			},
+			options:{
+				showTimes: true,
+				infectedFrame: 1,
+				scale: 1.25,
+				_dunce: true
+			}
+		},
+
+		// UI for the simulation
+		{
+			type:"box",
+			id:"ui",
+			x:380, y:165,
+			sim_ui:"red"
+		},
+
+		// Outro text
+		{
+			id:"end",
+			type:"box",
+			text:"push_post",
+			x:660, y:440, w:300, h:100,
+			hidden:true
+		}
+
+	],
+
+	onupdate:function(slideshow, state){
+
+		// Show end if EVERYONE is infected
+		if(!state.ended){
+			var sim = slideshow.simulations.sims[0];
+			var peepCount = 0;
+			sim.peeps.forEach(function(peep){
+				if(peep.infected) peepCount++;
+			});
+			if(peepCount==sim.peeps.length){
+				/*var boxes = slideshow.boxes;
+				boxes.showChildByID("end", true);*/
+				state.ended = true;
+				slideshow.next();
+			}
+		}
+
+	}
+
+},
+{
+	remove:[
+		{type:"box", id:"push_model"}
+	],
+	move:[
+		{type:"box", id:"ui", y:-300},
+		{type:"sim", id:"contagion", y:-250}
+	],
+	add:[
+		{
+			type:"box",
+			text:"push_post",
+			x:0, y:250, w:700, h:100,
+			align: "right"
+		},
+		{
+			type:"box",
+			text:"push_post_end",
+			x:700, y:340, w:300, h:90
+		}
+	]
+},
 );
