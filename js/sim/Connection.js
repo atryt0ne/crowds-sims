@@ -65,7 +65,7 @@ function Connection(config){
 		}
 		else if(self.sim.contagion==2 && self.contagionDot){
 			var infectedFrame = self.sim.options.infectedFrame || 1;
-			var dotFrame = self.sim.options.dotFrame || 1;
+			var dotFrame = self.sim.options.dotFrame || 0;
 			self.dotSprite.x = self.contagionDot.x;
 			self.dotSprite.y = self.contagionDot.y;
 			self.dotSprite.gotoFrame(dotFrame);
