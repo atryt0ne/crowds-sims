@@ -197,8 +197,17 @@ function Peep(config){
 		// Circle
 		var infectedFrame = self.sim.options.infectedFrame || 1;
 		var infectedColor = PEEP_COLORS[infectedFrame];
-		var myFrame = self.infected ? self.infectedWith : 0;
-		var myColor = PEEP_COLORS[myFrame];
+		if (self.sim.contagion <= 1){
+			myFrame = self.infected ? infectedFrame : 0;
+			myColor = PEEP_COLORS[infectedFrame]
+		}
+		else{
+			myFrame = self.infected ? self.infectedWith : 0
+			myColor = PEEP_COLORS[myFrame]
+		}
+		// var infectedColor = PEEP_COLORS[infectedFrame];
+		// var myFrame = self.infected ? self.infectedWith : 0;
+		// var myColor = PEEP_COLORS[myFrame];
 		// CONCLUSION SPLASH
 		if(self.sim.options.CONCLUSION){
 			var distance = getVectorLength(self);
@@ -218,12 +227,17 @@ function Peep(config){
 
 			// MODIFIED: Use yellow for uninfected, infectedWith color for infected
 			var glowFrame;
-			if(self.infected){
-				// For infected peeps, use their stored color
-				glowFrame = self.infectedWith || 1; // fallback to red if no color stored
-			} else {
-				// For uninfected peeps, always use yellow (frame 2)
-				glowFrame = 2; // yellow
+			if (self.sim.contagion <= 1){
+				glowFrame = infectedFrame
+			}
+			else{
+				if(self.infected){
+					// For infected peeps, use their stored color
+					glowFrame = self.infectedWith || 1; // fallback to red if no color stored
+				} else {
+					// For uninfected peeps, always use yellow (frame 2)
+					glowFrame = 2; // yellow
+				}
 			}
 					
 			self.sprite.gotoFrame(glowFrame);

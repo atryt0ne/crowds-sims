@@ -142,7 +142,7 @@ SLIDES.push(
 			fullscreen: true,
 			network: {
 				"contagion":0.5,
-				"peeps":[[141,99,0],[444,373,1],[442,103,1],[144,371,0]],
+				"peeps":[[141,99,0],[444,373,1,2],[442,103,1,2],[144,371,0]],
 				"connections":[[2,1,0],[3,2,0]]
 			},
 			options:{
@@ -156,33 +156,34 @@ SLIDES.push(
 },
 
 // pre-puzzle ramble
-{
-	remove:[
-		{ type:"box", id:"networks_threshold" },
-		{ type:"box", id:"networks_threshold_instruction" },
-		{ type:"box", id:"networks_threshold_explanation" },
-		{ type:"box", id:"networks_threshold_end" }
-	],
-	add:[
-		{
-			type:"box",
-			id:"networks_pre_puzzle",
-			text:"networks_pre_puzzle", x:60, y:0, w:400,
-			lineHeight:"1.3em"
-		},
-		{
-			type:"box",
-			id:"networks_pre_puzzle_2",
-			text:"networks_pre_puzzle_2", x:60, y:107, w:400,
-			lineHeight:"1.3em"
-		},
-		{
-			type:"box",
-			text:"optional_reading", x:60, y:220, w:400, h:30,
-			fontSize:"17px", color:"#bbb"
-		}
-	]
-},
+// {
+	// remove:[
+	// 	{ type:"box", id:"networks_threshold" },
+	// 	{ type:"box", id:"networks_threshold_instruction" },
+	// 	{ type:"box", id:"networks_threshold_explanation" },
+	// 	{ type:"box", id:"networks_threshold_end" },
+	// 	{ type:"sim", }
+	// ],
+	// add:[
+	// 	{
+	// 		type:"box",
+	// 		id:"networks_pre_puzzle",
+	// 		text:"networks_pre_puzzle", x:60, y:0, w:400,
+	// 		lineHeight:"1.3em"
+	// 	},
+	// 	{
+	// 		type:"box",
+	// 		id:"networks_pre_puzzle_2",
+	// 		text:"networks_pre_puzzle_2", x:60, y:107, w:400,
+	// 		lineHeight:"1.3em"
+	// 	},
+	// 	{
+	// 		type:"box",
+	// 		text:"optional_reading", x:60, y:220, w:400, h:30,
+	// 		fontSize:"17px", color:"#bbb"
+	// 	}
+	// ]
+// },
 
 
 // PUZZLE: The "Majority Illusion" puzzle
@@ -201,7 +202,7 @@ SLIDES.push(
 			fullscreen: true,
 			network: {
 				"contagion":0.5,
-				"peeps":[[106,106,1],[239,52,1],[376,110,1],[27,221,0],[54,365,0],[162,458,0],[308,467,0],[407,371,0],[453,241,0]],
+				"peeps":[[106,106,1,2],[239,52,1,2],[376,110,1,2],[27,221,0],[54,365,0],[162,458,0],[308,467,0],[407,371,0],[453,241,0]],
 				"connections":[],
 			},
 			options:{
@@ -308,7 +309,7 @@ SLIDES.push(
 		{
 			type:"box",
 			id:"networks_post_puzzle",
-			text:"networks_post_puzzle", x:560, y:0, w:400
+			text:"networks_post_puzzle", x:560, y:-70, w:400
 		},
 		/*{
 			type:"box",
