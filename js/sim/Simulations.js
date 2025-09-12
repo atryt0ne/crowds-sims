@@ -510,7 +510,7 @@ function Sim(config){
 		if(isEveryoneInfected || (canBeInfected === 0 && hasInfectedPeeps)){
 			// Don't increment step counter - simulation is effectively over
 			self.isProcessingStep = false; // Reset flag
-			// return; // Exit early, don't continue with the step
+			return; // Exit early, don't continue with the step
 		}
 
 

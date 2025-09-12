@@ -395,16 +395,20 @@ SLIDES.push(
 		// DRAWING FOR SOFT CONSTRAINTS...
 		{
 			type:"sim",
-			x:0, y:130,
+			x:0, y:230,
 			fullscreen: true,
 			network: {
 				"contagion":0.25,
 				"peeps":[
 					[90,-67,1],[181,-71,0],[36,21,0],[107,98,0],[206,92,0],[244,6,0],
-					[416,106,1],[352,181,0],[415,267,0],[528,268,0],[595,186,0],[532,107,0],
-					[769,-68,1],[701,6,0],[753,96,0],[855,110,0],[928,35,0],[867,-59,0]
+					[416,106,0],[352,181,0],[415,267,0],[528,268,0],[595,186,0],[532,107,0],
+					[769,-68,0],[701,6,0],[753,96,0],[855,110,0],[928,35,0],[867,-59,0]
 				],
-				"connections":[[13,12,0],[12,17,0],[16,15,0],[14,13,0],[13,16,0],[14,17,0],[17,15,0],[15,12,0],[12,16,0],[15,13,0],[17,16,0],[14,12,0],[13,17,0],[0,1,0],[2,5,0],[4,3,0],[15,14,0],[14,16,0]]
+				"connections":[[13,12,0],[12,17,0],[16,15,0],[14,13,0],[13,16,0],[14,17,0],[17,15,0],[15,12,0],[12,16,0],[15,13,0],[17,16,0],[14,12,0],[13,17,0],[15,14,0],[14,16,0],
+				[11,13,0],[10,14,0],[11,14,0],[10,13,0],
+				[6,7,0],[7,8,0],[8,9,0],[9,10,0],[10,11,0],[6,11,0],[6,9,0],[8,11,0],
+				[5,6,0],[4,7,0],
+				[0,1,0],[0,2,0],[2,5,0],[2,3,0],[4,3,0],[1,5,0],[5,4,0]]
 			},
 			options:{
 				infectedFrame: 3,
@@ -418,7 +422,7 @@ SLIDES.push(
 		{
 			type:"box",
 			id:"ui",
-			x:370, y:445,
+			x:370, y:545,
 			sim_ui:"blue"
 		},
 
@@ -426,7 +430,7 @@ SLIDES.push(
 		{
 			type:"box",
 			text:"bonding_1",
-			x:230, y:0+15, w:500, h:70,
+			x:230, y:-45, w:500, h:70,
 			align:"center"
 		},
 
@@ -434,7 +438,7 @@ SLIDES.push(
 		{
 			type:"box",
 			text:"bonding_2",
-			x:300, y:70+15, w:360, h:100,
+			x:300, y:70-45, w:360, h:100,
 			align:"center"
 		},
 
@@ -443,7 +447,7 @@ SLIDES.push(
 			id:"end",
 			type:"box",
 			text:"bonding_end",
-			x:660, y:290, w:300, h:250,
+			x:660, y:390, w:500, h:250,
 			hidden:true
 		}
 
@@ -454,7 +458,7 @@ SLIDES.push(
 		// If Peeps[6] to Peep[11] pass..
 		var sim = slideshow.simulations.sims[0];
 		var peepCount = 0;
-		for(var i=6; i<=11; i++){
+		for(var i=12; i<=17; i++){
 			var peep = sim.peeps[i];
 			if(peep.infected) peepCount++;
 		}
@@ -476,6 +480,86 @@ SLIDES.push(
 	}
 
 },
+{
+	chapter: "Complex",
+	clear:true,
+
+	add:[
+		{
+			id:"fully_connected",
+			type:"sim",
+			x:500, y:25,
+			fullscreen: true,
+			network: {
+				"contagion":2,
+				"peeps":[[106,106,0],[239,52,1,1],[376,110,0],[27,221,0],[54,365,0],[162,458,0],[308,467,0],[407,371,0],[453,241,0]],
+				"connections":[
+					[0,1,0],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0],[0,8,0],
+					[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[1,7,0],[1,8,0],
+					[2,3,0],[2,4,0],[2,5,0],[2,6,0],[2,7,0],[2,8,0],
+					[3,4,0],[3,5,0],[3,6,0],[3,7,0],[3,8,0],
+					[4,5,0],[4,6,0],[4,7,0],[4,8,0],
+					[5,6,0],[5,7,0],[5,8,0],
+					[6,7,0],[6,8,0],
+					[7,8,0],
+				],
+			},
+			options:{
+				infectedFrame: 2,
+				scale: 1.5,
+				showTimes : true,
+			}
+		},
+		// UI for the simulation
+		{
+			type:"box",
+			id:"ui",
+			x:60, y:350,
+			sim_ui:"blue"
+		},
+		{
+			type:"box",
+			id:"fully_connected_intro",
+			text:"fully_connected_intro", x:60, y:10, w:300
+		},
+		{
+			type:"box",
+			id:"fully_connected_content",
+			text:"fully_connected_content", x:60, y:40, w:300
+		},
+		{
+			type:"box",
+			id:"fully_connected_end",
+			text:"fully_connected_end", x:60, y:450, w:300,
+			hidden:true
+		}
+	],
+	onupdate:function(slideshow, state){
+
+		// If Peeps[6] to Peep[11] pass..
+		var sim = slideshow.simulations.sims[0];
+		var peepCount = 0;
+		for(var i=1; i<=8; i++){
+			var peep = sim.peeps[i];
+			if(peep.infected) peepCount++;
+		}
+
+		// Win
+		if(!state.ended){
+			if(peepCount==8){
+				var boxes = slideshow.boxes;
+				boxes.showChildByID("fully_connected_end", true);
+				state.ended = true;
+				sim.win({
+					x:100, y:75,
+					width:280, height:280,
+				});
+			}
+		}
+
+	}
+}
+
 
 // {
 // 	chapter: "Complex-Groupthink",
