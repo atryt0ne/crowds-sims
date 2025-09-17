@@ -778,7 +778,6 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 
 <words id="bonding_1">
 	&larr; Too few connections, and an idea can't spread.
-	<br>
 	Too many connections, and you get groupthink. <div class="rarr"></div> 
 </words>
 
@@ -787,7 +786,7 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 	of a Small World Network, where ideas spread easily, but groups are not locked
 	in insular echo chambers either.
 	<br>
-	Try adding more connections within a group to stop the flow of ideas to it.
+	Try adding more connections within the centre group <br> to <b>stop</b> the flow of ideas to it.
 	<div class="darr"></div>
 </words>
 
@@ -811,8 +810,23 @@ Also, <b></b> bolds a word/phrase, and <i></i> italicizes a word/phrase.
 </words>
 
 <words id="fully_connected_end">
-	Turns out, the amount of time needed is just log n.
+	Turns out, the amount of time needed is just log n<ref id="full_connected_explain"></ref>. But what if the graph...
+	<next wiggle>...  isn't fully connected?</next>
 
+</words>
+
+<words id="some_nice_graphs">
+	Well in certain cases, where the graph is <i>nice</i>, we can still use 
+	clever mathematical tricks, or just straight up work it out to get such a value.
+</words>
+
+<words id="some_nice_graphs_end">
+	Unfortunately, as you might have guessed, most real-life graphs really aren't 
+	like star-graphs or ring-graphs or anything else that is easy to work with.
+	To simulate a real graph you'd probably want to randomly add edges in a huge population.
+	And how could we ever hope to make a useful deterministic statement about a random graph?
+	Well, we use a little something called ...
+	<next wiggle> ... connectedness</next>
 </words>
 
 <words id="bridging_1">
@@ -1474,6 +1488,12 @@ Final thing! These references also need you to TRANSLATE:
 
 	</div>
 
+</reference>
+<reference id="fully_connected_explain">
+	This is not just an empirical result. You can do the math and <i>prove</i>
+	that this is true for a fully connected graph.
+	However, for <i>nearly every other kind of graph</i>, the result is going to 
+	be almost impossible to prove, especially most realistic graphs.
 </reference>
 <reference id="subprime">
 

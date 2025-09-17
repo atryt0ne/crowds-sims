@@ -405,10 +405,12 @@ SLIDES.push(
 					[769,-68,0],[701,6,0],[753,96,0],[855,110,0],[928,35,0],[867,-59,0]
 				],
 				"connections":[[13,12,0],[12,17,0],[16,15,0],[14,13,0],[13,16,0],[14,17,0],[17,15,0],[15,12,0],[12,16,0],[15,13,0],[17,16,0],[14,12,0],[13,17,0],[15,14,0],[14,16,0],
-				[11,13,0],[10,14,0],[11,14,0],[10,13,0],
+				[11,13,0],[10,14,0],
 				[6,7,0],[7,8,0],[8,9,0],[9,10,0],[10,11,0],[6,11,0],[6,9,0],[8,11,0],
 				[5,6,0],[4,7,0],
-				[0,1,0],[0,2,0],[2,5,0],[2,3,0],[4,3,0],[1,5,0],[5,4,0]]
+				[0,1,0],[0,2,0],[2,5,0],[2,3,0],[4,3,0],[1,5,0],[5,4,0],
+				[0,12,0],[1,12,0],[5,13,0]
+			]
 			},
 			options:{
 				infectedFrame: 3,
@@ -430,7 +432,7 @@ SLIDES.push(
 		{
 			type:"box",
 			text:"bonding_1",
-			x:230, y:-45, w:500, h:70,
+			x:40, y:-45, w:900, h:70,
 			align:"center"
 		},
 
@@ -438,7 +440,7 @@ SLIDES.push(
 		{
 			type:"box",
 			text:"bonding_2",
-			x:300, y:70-45, w:360, h:100,
+			x:40, y:40-45, w:900, h:100,
 			align:"center"
 		},
 
@@ -455,17 +457,19 @@ SLIDES.push(
 
 	onupdate:function(slideshow, state){
 
-		// If Peeps[6] to Peep[11] pass..
+		// If Peeps[6] to Peep[11] stay clean, but Peeps[0] to Peeps[5] get infected
 		var sim = slideshow.simulations.sims[0];
-		var peepCount = 0;
-		for(var i=12; i<=17; i++){
-			var peep = sim.peeps[i];
-			if(peep.infected) peepCount++;
+		var wantSafeCount = 0;
+		var wantInfectCount = 0;
+		for(var i=6; i<=11; i++){
+			var wantSafe = sim.peeps[i];
+			if(wantSafe.infected) wantSafeCount++;
+			var wantInfected = sim.peeps[i-6];
+			if (wantInfected.infected) wantInfectCount++
 		}
-
 		// Win
 		if(!state.ended){
-			if(peepCount==6){
+			if(wantSafeCount==0 && wantInfectCount == 6){
 				var boxes = slideshow.boxes;
 				boxes.showChildByID("end", true);
 				state.ended = true;
@@ -532,11 +536,17 @@ SLIDES.push(
 			id:"fully_connected_end",
 			text:"fully_connected_end", x:60, y:450, w:300,
 			hidden:true
+		},
+		{
+			type:"box",
+			id:"fully_connected_next",
+			text:"fully_connected_next",
+			hidden:true
 		}
 	],
 	onupdate:function(slideshow, state){
 
-		// If Peeps[6] to Peep[11] pass..
+		// If all peeps are infected..
 		var sim = slideshow.simulations.sims[0];
 		var peepCount = 0;
 		for(var i=1; i<=8; i++){
@@ -549,6 +559,7 @@ SLIDES.push(
 			if(peepCount==8){
 				var boxes = slideshow.boxes;
 				boxes.showChildByID("fully_connected_end", true);
+				boxes.showChildByID("fully_connected_next",true);
 				state.ended = true;
 				sim.win({
 					x:100, y:75,
